@@ -9,8 +9,8 @@ module.exports = {
     },
     output: {
         path: resolve(__dirname, 'dist'),
-        filename: '[name]-bundle.js',
-        chunkFilename: '[name]-chunk.js',
+        filename: 'js/[name]-bundle.js',
+        chunkFilename: 'js/[name]-chunk.js',
     },
     module: {
         rules: [{
@@ -60,6 +60,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: '../public/index.html',
+            favicon: '../public/favicon.png'
         }),
         new webpack.ProvidePlugin({
             React: 'react', //Global access
