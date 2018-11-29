@@ -13,6 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
     "babel-loader": "^8.0.4",
     "babel-plugin-transform-react-jsx": "^6.24.1",
@@ -40,8 +41,20 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
+    "@antv/data-set": "^0.10.1",
+    "@icedesign/base": "^0.2.5",
+    "@icedesign/container": "^0.1.8",
+    "@icedesign/img": "^0.1.6",
+    "@icedesign/layout": "^0.1.6",
+    "@icedesign/menu": "^0.1.1",
+    "@icedesign/skin": "^0.1.14",
+    "bizcharts": "^3.4.0",
+    "enquire-js": "^0.1.2",
+    "foundation-symbol": "^0.1.4",
+    "prop-types": "^15.6.2",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "react-router-dom": "^4.3.1"
   },
   "repository": {
     "type": "git",

@@ -55,7 +55,7 @@ module.exports = merge(common, {
                 uglifyOptions: {
                     warnings: false,
                     compress: true,
-                  }
+                },
             }),
         ],
     },

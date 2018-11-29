@@ -44,7 +44,7 @@ module.exports = merge(common, {
                 fallback: 'style-loader',
             })),
         }, {
-            test: /\.js$/,
+            test: /\.(js|jsx)$/,
             enforce: 'pre',
             exclude: /node_modules/,
             loader: 'eslint-loader',

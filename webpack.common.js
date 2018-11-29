@@ -37,13 +37,14 @@ module.exports = {
                 outputPath: 'images/',
             },
         }, {
-            test: /\.js$/,
+            test: /\.(js|jsx)$/,
             include: resolve(__dirname, 'src/'),
             use: [{
                 loader: 'babel-loader',
                 options: {
                     presets: ['@babel/env'],
                     plugins: [
+                        '@babel/plugin-proposal-class-properties',
                         ['transform-react-jsx', {
                             'pragma': 'React.createElement',
                         }],
@@ -56,11 +57,12 @@ module.exports = {
         alias: {
             '~': resolve(__dirname, 'src/'),
         },
+        extensions: ['.js', '.jsx'],
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: '../public/index.html',
-            favicon: '../public/favicon.png'
+            favicon: '../public/favicon.png',
         }),
         new webpack.ProvidePlugin({
             React: 'react', //Global access
