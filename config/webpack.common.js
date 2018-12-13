@@ -21,7 +21,7 @@ module.exports = {
             },
         }, {
             test: /\.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
-           // exclude: /node_modules/,
+            // exclude: /node_modules/,
             loader: 'file-loader',
             options: {
                 name: '[name].[ext]',
@@ -39,11 +39,7 @@ module.exports = {
         }, {
             test: /\.(js|jsx)$/,
             exclude:/node_modules/,
-            loader: "babel-loader"
-        },{
-            test: /\.js$/,
-            exclude:/node_modules/,
-            use: ['babel-loader', 'eslint-loader']
+            use: ['babel-loader', 'eslint-loader'],
         },{
             test: /\.svg$/,
             use: [
@@ -54,14 +50,14 @@ module.exports = {
                         publicPath: '/assets/images/',
                         outputPath: 'assets/images/',
                     },                    
-                }
-            ]
-        }
-    ],
+                },
+            ],
+        },
+        ],
     },
     resolve: {
         alias: {
-            '~': resolve(__dirname, '..', 'src/')
+            '~': resolve(__dirname, '..', 'src/'),
         },
         extensions: ['.js', '.jsx'],
     },

@@ -30,7 +30,7 @@ module.exports = merge(common, {
     },
     module: {
         rules: [{
-            test: /\.scss$/,
+            test: /\.less$/,
             use: [{
                 loader: 'css-hot-loader',
             }].concat(ExtractTextPlugin.extract({
@@ -38,8 +38,8 @@ module.exports = merge(common, {
                     loader: 'css-loader',
                     options: { sourceMap: true },
                 }, {
-                    loader: 'sass-loader',
-                    options: { sourceMap: true },
+                    loader: 'less-loader',
+                    options: { javascriptEnabled: true },
                 }],
                 // use style-loader in development
                 fallback: 'style-loader',
@@ -56,8 +56,8 @@ module.exports = merge(common, {
                 // use style-loader in development
                 fallback: 'style-loader',
             })),
-        }
-    ],
+        },
+        ],
     },
     plugins: [
         new ExtractTextPlugin({
