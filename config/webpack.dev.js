@@ -10,8 +10,9 @@ module.exports = merge(common, {
     mode: 'development',
     devtool: 'source-map',
     devServer: {
+        historyApiFallback: true,
         hot: true,
-        contentBase: './dist',
+        contentBase: '../build',
         port: 3000,
         /*overlay: {
             errors: true,
@@ -29,7 +30,7 @@ module.exports = merge(common, {
     },
     module: {
         rules: [{
-            test: /(\.css|\.scss)$/,
+            test: /\.scss$/,
             use: [{
                 loader: 'css-hot-loader',
             }].concat(ExtractTextPlugin.extract({
@@ -43,22 +44,20 @@ module.exports = merge(common, {
                 // use style-loader in development
                 fallback: 'style-loader',
             })),
-        }, {
-            test: /\.js$/,
-            enforce: 'pre',
-            exclude: /node_modules/,
-            loader: 'eslint-loader',
-            options: {
-                cache: true,
-                emitWarning: true,
-                // Fail only on errors
-                failOnWarning: false,
-                failOnError: false,
-                // Toggle autofix
-                fix: false,
-                formatter: require('eslint/lib/formatters/stylish'),
-            },
-        }],
+        },{
+            test: /.css$/,
+            use: [{
+                loader: 'css-hot-loader',
+            }].concat(ExtractTextPlugin.extract({
+                use: [{
+                    loader: 'css-loader',
+                    options: { sourceMap: true },
+                }],
+                // use style-loader in development
+                fallback: 'style-loader',
+            })),
+        }
+    ],
     },
     plugins: [
         new ExtractTextPlugin({

@@ -5,8 +5,9 @@ module.exports = {
         es6: true,
         node: true,
     },
+    //忽略检查某些全局变量
     globals: {
-        'm': true
+        'React': true
     },
     extends: [
         'eslint:recommended',

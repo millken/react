@@ -13,8 +13,10 @@ module.exports = merge(common, {
     devtool: 'source-map',
     module: {
         rules: [{
-            test: /(\.css|\.scss)$/,
-            use: ExtractTextPlugin.extract({
+            test: /\.scss$/,
+            use: [{
+                loader: 'css-hot-loader',
+            }].concat(ExtractTextPlugin.extract({
                 use: [{
                     loader: 'css-loader',
                     options: { sourceMap: true },
@@ -22,13 +24,27 @@ module.exports = merge(common, {
                     loader: 'sass-loader',
                     options: { sourceMap: true },
                 }],
-            }),
+                // use style-loader in development
+                fallback: 'style-loader',
+            })),
+        },{
+            test: /.css$/,
+            use: [{
+                loader: 'css-hot-loader',
+            }].concat(ExtractTextPlugin.extract({
+                use: [{
+                    loader: 'css-loader',
+                    options: { sourceMap: true },
+                }],
+                // use style-loader in development
+                fallback: 'style-loader',
+            })),
         }],
     },
     plugins: [
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['build']),
         new ExtractTextPlugin({
-            filename: (getPath) => getPath('css/[name]-[hash].css'),
+            filename: (getPath) => getPath('assets/[name]-[hash].css'),
             allChunks: true,
         }),
         new PurifyCSSPlugin({
@@ -42,6 +58,7 @@ module.exports = merge(common, {
                 whitelist: [],
             },
         }),
+
     ],
     optimization: {
         minimizer: [

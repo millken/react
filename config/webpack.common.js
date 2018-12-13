@@ -3,12 +3,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    context: resolve(__dirname, 'src'),
+    context: resolve(__dirname, '..', 'src'),
     entry: {
         main: './index.js',
     },
     output: {
-        path: resolve(__dirname, 'dist'),
+        path: resolve(__dirname,'..', 'build'),
         filename: '[name]-bundle.js',
         chunkFilename: '[name]-chunk.js',
     },
@@ -20,42 +20,50 @@ module.exports = {
                 interpolate: true,
             },
         }, {
-            test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-            exclude: /node_modules/,
+            test: /\.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
+           // exclude: /node_modules/,
             loader: 'file-loader',
             options: {
                 name: '[name].[ext]',
-                publicPath: '../fonts/',
-                outputPath: 'fonts/',
+                publicPath: '../assets/fonts/',
+                outputPath: 'assets/fonts/',
             },
         }, {
             test: /\.(png|jpg|gif)$/,
             loader: 'file-loader',
             options: {
                 name: '[name].[ext]',
-                publicPath: '../images/',
-                outputPath: 'images/',
+                publicPath: '../assets/images/',
+                outputPath: 'assets/images/',
             },
         }, {
+            test: /\.(js|jsx)$/,
+            exclude:/node_modules/,
+            loader: "babel-loader"
+        },{
             test: /\.js$/,
-            include: resolve(__dirname, 'src/'),
-            use: [{
-                loader: 'babel-loader',
-                options: {
-                    presets: ['@babel/env'],
-                    plugins: [
-                        ['transform-react-jsx', {
-                            'pragma': 'React.createElement',
-                        }],
-                    ],
-                },
-            }],
-        }],
+            exclude:/node_modules/,
+            use: ['babel-loader', 'eslint-loader']
+        },{
+            test: /\.svg$/,
+            use: [
+                {
+                    loader: 'url-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        publicPath: '/assets/images/',
+                        outputPath: 'assets/images/',
+                    },                    
+                }
+            ]
+        }
+    ],
     },
     resolve: {
         alias: {
-            '~': resolve(__dirname, 'src/'),
+            '~': resolve(__dirname, '..', 'src/')
         },
+        extensions: ['.js', '.jsx'],
     },
     plugins: [
         new HtmlWebpackPlugin({
