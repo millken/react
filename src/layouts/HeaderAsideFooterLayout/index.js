@@ -6,7 +6,7 @@ import Header from './Header';
 const { Content, Footer } = Layout;
 
 
-import '~/assets/css/antd/index.less';
+import '~/style/antd/index.less';
 
 export default class Component extends React.Component {
     constructor(props) {
@@ -15,8 +15,8 @@ export default class Component extends React.Component {
             collapsed: false,
         };
     }
-    
-    toggle=()=> {
+
+    toggle = () => {
         this.setState({
             collapsed: !this.state.collapsed,
         });
@@ -27,8 +27,8 @@ export default class Component extends React.Component {
             <Layout>
                 <Asider collapsed={this.state.collapsed} />
                 <Layout style={{ flexDirection: 'column' }}>
+                    <Header toggle={this.toggle} collapsed={this.state.collapsed} user={{}} />
                     <Content style={{ margin: '0 16px', overflow: 'initial', flex: '1 1 0' }}>
-                        <Header toggle={this.toggle} collapsed={this.state.collapsed} user={ {}} />
                         {this.props.children}
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>

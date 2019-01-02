@@ -27,6 +27,11 @@ class Component extends React.Component {
     render() {
         return (
             <Header className="custom-theme header" >
+                <Icon
+                    className="header__trigger custom-trigger"
+                    type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'}
+                    onClick={this.props.toggle}
+                />
                 <Menu
                     mode="horizontal"
                     style={{ lineHeight: '64px', float: 'right' }}
