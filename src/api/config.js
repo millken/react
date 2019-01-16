@@ -8,6 +8,8 @@ export default(config => {
     // example api
     'accountSignup': '/account/signup',
     'accountLogin': '/account/login', 
-    'getProductList': '/product/list',
-    'addProduct': '/product/add',
+    'getDomainList': '/ddns/index',
+    'getOrderDdnsFormSetting': '/package/ddns/setting',
+    'ddnsValidateDomain':'/ddns/domain/validate',
+    'createOrder':'/order/create',
 });

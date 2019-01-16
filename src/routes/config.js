@@ -3,7 +3,8 @@ import HeaderAsideFooterLayout from '~/layouts/HeaderAsideFooterLayout';
 import EmptyLayout from '~/layouts/EmptyLayout';
 
 import NotFound from '~/pages/NotFound';
-import {ProductList,ProductForm} from '~/pages/Product';
+import {DomainList,RecordList} from '~/pages/Ddns';
+import {OrderList,OrderCreate,OrderPay} from '~/pages/Order';
 import Login from '~/pages/Login';
 
 const routerConfig = [
@@ -13,14 +14,34 @@ const routerConfig = [
         component: NotFound,
     },
     {
-        path: '/product/list',
+        path: '/app/ddns/index',
         layout: HeaderAsideFooterLayout,
-        component: ProductList,
+        component: DomainList,
     },
     {
-        path: '/product/add',
+        path: '/ddns/record/index',
         layout: HeaderAsideFooterLayout,
-        component: ProductForm,
+        component: RecordList,
+    },
+    {
+        path: '/app/ddns/record/index',
+        layout: HeaderAsideFooterLayout,
+        component: RecordList,
+    },
+    {
+        path: '/app/order/index',
+        layout: HeaderAsideFooterLayout,
+        component: OrderList,
+    },
+    {
+        path: '/app/order/create',
+        layout: HeaderAsideFooterLayout,
+        component: OrderCreate,
+    },
+    {
+        path: '/app/order/pay',
+        layout: HeaderAsideFooterLayout,
+        component: OrderPay,
     },
     {
         path: '/login',

@@ -1,10 +1,10 @@
 @import "~antd/lib/style/themes/default.less";
 // 基础颜色
 @white: #ffffff;
-@primary-color: #313653;
+@primary-color: #1c324f;
 @primary-color-light: fade(lighten(@primary-color, 5%), 15%);
 // 顶部背景色
-@layout-header-background:@primary-color;
+@layout-header-background: #1d2b40;
 // 左边菜单light颜色
 @layout-sider-background-light: #f9f9f9;
 // 字体颜色
@@ -20,3 +20,20 @@
 @link-color: #1989fa;
 @table-expanded-row-bg:#e7efff;
 @table-row-hover-bg:#e7efff;
+
+@btn-primary-bg: #4a89e8;
+.ant-layout-sider-children {
+    background-color: @primary-color;
+}
+.ant-layout-sider-children >.logo {
+    background-color: @layout-header-background;
+}
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  color: #fff;
+  background-color: #5b96d9;
+  border-color: #5b96d9;
+}
+.ant-input-group-addon{
+    background-color: #fafafa;
+}

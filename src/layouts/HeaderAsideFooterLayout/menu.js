@@ -1,17 +1,20 @@
 export default {
     menus: [ // 菜单相关路由
-        { key: '/app/dashboard/index', title: '首页', icon: 'mobile', component: 'Dashboard' },
+        { key: '/app/dashboard/index', title: '首页', icon: 'home' },
+        {
+            key: '/app/ddns', title: '动态DNS', icon: 'database',
+            subs: [
+                { key: '/app/ddns/index', title: '域名管理'},
+                { key: '/app/ddns/client', title: 'DDNS客户端' },
+            ],
+        },
+        { key: '/app/dashboard/ddns', title: '动态DNS', icon: 'database', component: 'Dashboard' },
+        { key: '/app/dashboard/waf', title: 'CDN+', icon: 'cluster', component: 'Dashboard' },
+        { key: '/app/order/index', title: '订单管理', icon: 'ordered-list'},
         {
             key: '/app/ui', title: '产品', icon: 'project',
             subs: [
                 { key: '/product/list', title: '产品列表', component: 'Buttons' },
-            ],
-        },
-        {
-            key: '/app/animation', title: '动画', icon: 'rocket',
-            subs: [
-                { key: '/app/animation/basicAnimations', title: '基础动画', component: 'BasicAnimations' },
-                { key: '/app/animation/exampleAnimations', title: '动画案例', component: 'ExampleAnimations' },
             ],
         },
         {
