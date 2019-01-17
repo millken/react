@@ -26,6 +26,10 @@ let createOrder = function (params = {}) {
     return http.post(config.createOrder, params);
 };
 
+let ddnsRecordUpdate = function (params = {}) {
+    return http.post(config.ddnsRecordUpdate, params);
+};
+
 export {
     accountSignup,
     accountLogin,
@@ -33,6 +37,7 @@ export {
     addProduct,
     getOrderDdnsFormSetting,
     ddnsValidateDomain,
+    ddnsRecordUpdate,
     createOrder,
 
 };

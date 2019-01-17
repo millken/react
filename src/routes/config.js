@@ -3,7 +3,7 @@ import HeaderAsideFooterLayout from '~/layouts/HeaderAsideFooterLayout';
 import EmptyLayout from '~/layouts/EmptyLayout';
 
 import NotFound from '~/pages/NotFound';
-import {DomainList,RecordList} from '~/pages/Ddns';
+import {DomainList,RecordList,RecordForm} from '~/pages/Ddns';
 import {OrderList,OrderCreate,OrderPay} from '~/pages/Order';
 import Login from '~/pages/Login';
 
@@ -24,9 +24,9 @@ const routerConfig = [
         component: RecordList,
     },
     {
-        path: '/app/ddns/record/index',
+        path: '/ddns/record/update',
         layout: HeaderAsideFooterLayout,
-        component: RecordList,
+        component: RecordForm,
     },
     {
         path: '/app/order/index',

@@ -67,6 +67,19 @@ const proxy = {
       data: data,
     });
   },
+    //新增OR修改ddns记录
+    'POST /api/ddns/record/update': (req, res) => {
+      const { type, title, content } = req.body;
+      console.log(req.body);
+      return res.json({
+        success: true,
+        code: 200,
+        message: "添加成功",
+        data: {
+          sn: '20190101',
+        }
+      });
+    },
  // ddns检查域名可用
   'GET /api/ddns/domain/validate': (req, res) => {
     const { hostname = '', domain ='' } = req.query;

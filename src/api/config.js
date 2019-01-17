@@ -12,4 +12,5 @@ export default(config => {
     'getOrderDdnsFormSetting': '/package/ddns/setting',
     'ddnsValidateDomain':'/ddns/domain/validate',
     'createOrder':'/order/create',
+    'ddnsRecordUpdate':'/ddns/record/update',
 });

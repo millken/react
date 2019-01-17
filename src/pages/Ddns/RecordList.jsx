@@ -5,6 +5,7 @@ import Breadcrumb from '../../components/Breadcrumb';
 
 import { getDomainList } from '~/api/service';
 
+
 const columns = [{
     title: '记录类型',
     dataIndex: 'record_type',
@@ -122,6 +123,7 @@ export default class Component extends React.Component {
                             <Card bordered={false}>
                                 <div style={{ marginBottom: 16 }}>
                                     <Button type="primary" onClick={this.showModalRecordAdd}>添加记录</Button>
+                                    <Link to="/ddns/record/update"><Button type="primary" >添加记录2</Button></Link>
                                     <ModalRecord
                                         ref={this.saveFormRef}
                                         title={this.state.modalTitle}
