@@ -94,6 +94,29 @@ const proxy = {
       success: true,
       data: data,
     });
+  }, 
+  //综合记录列表
+  'GET /api/ddns/record/synthesize': (req, res) => {
+    const { domain ='' } = req.query;
+    let data = [
+      {
+        id: 1,
+        type: 'dyn',
+        name: 'test',
+        github: '',
+      },
+      {
+        id: 2,
+        type: 'github',
+        name: 'github',
+        github: 'https://github.com/test/demo',
+      },
+  ];
+  
+    return res.json({
+      success: true,
+      data: data,
+    });
   },  
   // ddns配置
   'GET /api/package/ddns/setting': (req, res) => {

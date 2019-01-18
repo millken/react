@@ -29,6 +29,10 @@ let createOrder = function (params = {}) {
 let ddnsRecordUpdate = function (params = {}) {
     return http.post(config.ddnsRecordUpdate, params);
 };
+//域名的综合记录
+let getSynthesizeRecordList = function (params = {}) {
+    return http.get(config.getSynthesizeRecordList, params);
+};
 
 export {
     accountSignup,
@@ -39,5 +43,6 @@ export {
     ddnsValidateDomain,
     ddnsRecordUpdate,
     createOrder,
+    getSynthesizeRecordList,
 
 };

@@ -1,10 +1,15 @@
-import { Button, Row, Col, Card, Table, Divider, Tag, Icon } from 'antd';
+import { Button, Row, Col, Card, Table, Divider, Tag, Icon, Select, Checkbox, Input, Collapse } from 'antd';
 import { Link } from 'react-router-dom';
 import ModalRecord from './ModalRecord';
 import Breadcrumb from '../../components/Breadcrumb';
 
-import { getDomainList } from '~/api/service';
+import { getDomainList, getSynthesizeRecordList } from '~/api/service';
 
+import '~/style/custom.css';
+
+const Option = Select.Option;
+const CheckboxGroup = Checkbox.Group;
+const Panel = Collapse.Panel;
 
 const columns = [{
     title: '记录类型',
@@ -42,14 +47,64 @@ const titleRecordEdit = '修改记录';
 export default class Component extends React.Component {
     state = {
         modalTitle: titleRecordAdd,
-        visible: false,
+        visibleGithub: false,
         confirmLoading: false,
         initValues: null,
         data: [],
+        recordsSynthesize: [],
         pagination: {},
         loading: false,
+        valueSynthesizeType: 'dyn',
+        valueSynthesize: {
+            type: 'dyn',
+            name: '',
+            github: '',
+        },
     };
+    onSubmitSynthesize = () => {
+        console.log(this.state.valueSynthesize);
+    }
+    onChangeSynthesizeType = (value) => {
+        setTimeout(() => {
+            this.setState({
+                valueSynthesize: {
+                    ...this.state.valueSynthesize,
+                    type: value,
+                },
+            });
+        }, 0);
 
+        switch (value) {
+        case 'github':
+            this.setState({
+                visibleGithub: true,
+            });
+            break;
+        case 'dyn':
+            this.setState({
+                visibleGithub: false,
+            });
+            break;
+        }
+    }
+    onChangeSynthesizeName = e => {
+        const { value } = e.target;
+        this.setState({
+            valueSynthesize: {
+                ...this.state.valueSynthesize,
+                name: value,
+            },
+        });
+    }
+    onChangeSynthesizeGithub = e => {
+        const { value } = e.target;
+        this.setState({
+            valueSynthesize: {
+                ...this.state.valueSynthesize,
+                github: value,
+            },
+        });
+    }
     showModalRecordAdd = () => {
         this.setState({
             modalTitle: titleRecordAdd,
@@ -100,6 +155,12 @@ export default class Component extends React.Component {
     fetch = (params = {}) => {
         console.log('params:', params);
         this.setState({ loading: true });
+        getSynthesizeRecordList().then((data) => {
+            console.log(data);
+            this.setState({
+                recordsSynthesize: data.data,
+            });
+        });
         getDomainList(params).then((data) => {
             const pagination = { ...this.state.pagination };
             // Read total count from server
@@ -117,6 +178,111 @@ export default class Component extends React.Component {
         return (
             <div>
                 <Breadcrumb first="动态DNS" second="域名管理" />
+                <Card style={{ width: '70%' }} bordered={true}>
+                    <div style={{ marginBottom: 16 }}>
+                        <h3>综合记录</h3>
+                        <p>综合记录可让您一步到位为您的网域添加常用功能（例如域名转向或 G Suite）。每份综合记录都是自动生成的与某项具体功能相关的资源记录集。</p>
+                        <div>
+                            <div className="oa-c-w">
+                                <div className="oa-c-t">
+                                    <div style={{ width: '20%' }}>
+                                        <Select
+                                            value={this.state.valueSynthesize.type}
+                                            style={{ width: 150 }}
+                                            onChange={this.onChangeSynthesizeType.bind(this)}
+                                        >
+                                            <Option key="dyn">动态DNS</Option>
+                                            <Option key="github">GITHUB站点</Option>
+                                        </Select>
+                                    </div>
+                                    <div style={{ width: '30%' }}>
+                                        <Input style={{ width: 300 }} value={this.state.valueSynthesize.name} onChange={this.onChangeSynthesizeName} addonAfter=".test.com" />
+                                    </div>
+                                    <div style={{ width: '50%' }}>
+                                        {this.state.visibleGithub &&
+                                            <React.Fragment><span style={{ fontSize: '18px' }}>→</span> <Input style={{ width: 300 }} value={this.state.valueSynthesize.github} addonBefore="https://github.com/" onChange={this.onChangeSynthesizeGithub} placeholder="yourname/repo" /></React.Fragment>}
+                                    </div>
+                                    <div>
+                                        <Button type="primary" onClick={this.onSubmitSynthesize}>添加</Button>
+                                    </div>
+                                </div>
+                            </div>
+                            <Collapse bordered={false}>
+                                {this.state.recordsSynthesize.map((item, idx) => {
+                                    if (item.type == 'dyn') {
+                                        return (<Panel header={(
+                                            <React.Fragment>
+                                                <div className="oa-u-nb">
+                                                    动态DNS
+                                                </div>
+                                                <div className="oa-c-t">
+                                                    <div style={{ width: '30%' }}>test.aaaa.com</div>
+                                                    <div style={{ width: '60%' }}>
+
+                                                    </div>
+                                                    <div style={{ width: '5%' }}><Link to="">删除</Link></div>
+                                                    <div style={{ width: '5%' }}><Link to="">修改</Link></div>
+                                                </div>
+                                            </React.Fragment>
+                                        )} key="1"
+                                        className="oa-c-tb"
+                                        >
+                                            <div style={{ margin: '8px' }}>
+                                                <div className="oa-u-u">
+                                                    <div>用户名：xxxxxx</div>
+                                                    <div>密码：xxxxxxx <a style={{ float: 'right' }}> 重置凭据 </a></div>
+                                                </div>
+                                            </div>
+                                        </Panel>);
+                                    }
+                                })}
+                                <Panel header={(
+                                    <React.Fragment>
+                                        <div className="oa-u-nb">
+                                            动态DNS
+                                        </div>
+                                        <div className="oa-c-t">
+                                            <div style={{ width: '30%' }}>test.aaaa.com</div>
+                                            <div style={{ width: '60%' }}>
+
+                                            </div>
+                                            <div style={{ width: '5%' }}><Link to="">删除</Link></div>
+                                            <div style={{ width: '5%' }}><Link to="">修改</Link></div>
+                                        </div>
+                                    </React.Fragment>
+                                )} key="1"
+                                className="oa-c-tb"
+                                >
+                                    <div style={{ margin: '8px' }}>
+                                        <div className="oa-u-u">
+                                            <div>用户名：xxxxxx</div>
+                                            <div>密码：xxxxxxx <a style={{ float: 'right' }}> 重置凭据 </a></div>
+                                        </div>
+                                    </div>
+                                </Panel>
+                                <Panel header={(
+                                    <React.Fragment>
+                                        <div className="oa-u-nb">
+                                            GITHUB站点
+                                        </div>
+                                        <div className="oa-c-t">
+                                            <div style={{ width: '30%' }}>test.aaaa.com</div>
+                                            <div style={{ width: '60%' }}>
+                                                <span style={{ fontSize: '18px' }}>→</span> http://wwww.aaa.com/aa/aa
+                                            </div>
+                                            <div style={{ width: '5%' }}><Link to="">删除</Link></div>
+                                            <div style={{ width: '5%' }}><Link to="">修改</Link></div>
+                                        </div>
+                                    </React.Fragment>
+                                )} key="2"
+                                className="oa-c-tb"
+                                >
+
+                                </Panel>
+                            </Collapse>
+                        </div>
+                    </div>
+                </Card>
                 <Row gutter={16}>
                     <Col className="gutter-row" md={24}>
                         <div className="gutter-box">

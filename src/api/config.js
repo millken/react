@@ -13,4 +13,5 @@ export default(config => {
     'ddnsValidateDomain':'/ddns/domain/validate',
     'createOrder':'/order/create',
     'ddnsRecordUpdate':'/ddns/record/update',
+    'getSynthesizeRecordList': '/ddns/record/synthesize',
 });
