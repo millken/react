@@ -54,7 +54,9 @@ const proxy = {
       data.push({
         key: i,
         name: "aaa.ddns.net",
+        type: "A",
         levelID: 3,
+        ttl: 600,
         package: "免费版",
         lastDate: "2015-12-12 12:12:12",
       });

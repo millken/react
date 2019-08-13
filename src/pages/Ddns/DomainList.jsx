@@ -78,7 +78,7 @@ export default class Component extends React.Component {
                         <div className="gutter-box">
                             <Card bordered={false}>
                                 <div style={{ marginBottom: 16 }}>
-                                    <Link to="/product/add"><Button type="primary"><Icon style={{ color: '#fff' }} type="plus" />添加产品</Button></Link>
+                                    <Link to="/order/create"><Button type="primary"><Icon style={{ color: '#fff' }} type="plus" />添加域名</Button></Link>
                                 </div>
                                 <Table columns={columns}
                                     dataSource={this.state.data}

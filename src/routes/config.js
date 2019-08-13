@@ -14,7 +14,7 @@ const routerConfig = [
         component: NotFound,
     },
     {
-        path: '/app/ddns/index',
+        path: '/ddns/index',
         layout: HeaderAsideFooterLayout,
         component: DomainList,
     },
@@ -29,17 +29,17 @@ const routerConfig = [
         component: RecordForm,
     },
     {
-        path: '/app/order/index',
+        path: '/order/index',
         layout: HeaderAsideFooterLayout,
         component: OrderList,
     },
     {
-        path: '/app/order/create',
+        path: '/order/create',
         layout: HeaderAsideFooterLayout,
         component: OrderCreate,
     },
     {
-        path: '/app/order/pay',
+        path: '/order/pay',
         layout: HeaderAsideFooterLayout,
         component: OrderPay,
     },

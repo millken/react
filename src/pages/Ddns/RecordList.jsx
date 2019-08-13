@@ -1,4 +1,4 @@
-import { Button, Row, Col, Card, Table, Divider, Tag, Icon, Select, Checkbox, Input, Collapse } from 'antd';
+import { Button, Row, Col, Card, Table, Divider, Tag, Icon, Select, Checkbox, Input, Collapse,Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import ModalRecord from './ModalRecord';
 import Breadcrumb from '../../components/Breadcrumb';
@@ -13,22 +13,30 @@ const Panel = Collapse.Panel;
 
 const columns = [{
     title: '记录类型',
-    dataIndex: 'record_type',
-    key: 'record_type',
+    dataIndex: 'type',
+    key: 'type',
     render: text => <span>{text}</span>,
 }, {
     title: '主机记录',
     dataIndex: 'name',
     key: 'name',
-    render: text => <Tag color="#2db7f5">{text}</Tag>,
+    render: text => <span>{text}</span>,
 }, {
     title: '插件',
     dataIndex: 'plugin',
     key: 'plugin',
+    render: text => (
+        <span>
+            <Tag color="green">GeoIP</Tag>
+            <Tag color="blue">智能DNS</Tag>
+            <Tag color="cyan">权重</Tag>
+        </span>
+    ),
 }, {
-    title: '备注',
-    dataIndex: 'remark',
-    key: 'remark',
+    title: 'TTL',
+    dataIndex: 'ttl',
+    key: 'ttl',
+    render: text => <span>{text}</span>,
 }, {
     title: '操作',
     key: 'action',
@@ -43,6 +51,7 @@ const columns = [{
 
 const titleRecordAdd = '添加记录';
 const titleRecordEdit = '修改记录';
+const expandedRowRender = record => <p>{record.description}</p>;
 
 export default class Component extends React.Component {
     state = {
@@ -55,12 +64,14 @@ export default class Component extends React.Component {
         pagination: {},
         loading: false,
         valueSynthesizeType: 'dyn',
+        editingID: '',
         valueSynthesize: {
             type: 'dyn',
             name: '',
             github: '',
         },
     };
+    isEditing = record => record.id === this.state.editingID;
     onSubmitSynthesize = () => {
         console.log(this.state.valueSynthesize);
     }
@@ -104,6 +115,19 @@ export default class Component extends React.Component {
                 github: value,
             },
         });
+    }
+    onChangeSynthesizeHeader = e => {
+        console.log(e.length);
+        if(e.length == 0) {
+            return;
+        }
+    }
+    deleteSynthesizeRecord = id => {
+        console.log(id);
+    }
+    updateSynthesizeRecord = id => {
+        this.setState({ editingID: id });
+        console.log(id);
     }
     showModalRecordAdd = () => {
         this.setState({
@@ -207,24 +231,44 @@ export default class Component extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <Collapse bordered={false}>
+                            <Collapse onChange={this.onChangeSynthesizeHeader} bordered={false}>
                                 {this.state.recordsSynthesize.map((item, idx) => {
+                                    const editable = this.isEditing(item);
                                     if (item.type == 'dyn') {
                                         return (<Panel header={(
                                             <React.Fragment>
                                                 <div className="oa-u-nb">
                                                     动态DNS
                                                 </div>
-                                                <div className="oa-c-t">
-                                                    <div style={{ width: '30%' }}>test.aaaa.com</div>
-                                                    <div style={{ width: '60%' }}>
+                                                {editable ? (
+                                                    <div className="oa-c-t">
+                                                        <div style={{ width: '30%' }}>
+                                                            <Input style={{ width: 300 }} value={this.state.valueSynthesize.name} onChange={this.onChangeSynthesizeName} addonAfter=".test.com" />
+                                                        </div>
+                                                        <div style={{ width: '50%' }}>
 
+                                                        </div>
+                                                        <div style={{ width: '10%' }}>
+                                                            <Button onClick={(e) => { e.stopPropagation();this.setState({ editingID: '' }); }}>取消</Button>
+                                                        </div>
+                                                        <div style={{ width: '10%' }}><Button type="primary" onClick={(e) => { e.stopPropagation(); this.updateSynthesizeRecord(item.id); }}>保存</Button></div>
                                                     </div>
-                                                    <div style={{ width: '5%' }}><Link to="">删除</Link></div>
-                                                    <div style={{ width: '5%' }}><Link to="">修改</Link></div>
-                                                </div>
+                                                ) : (
+                                                    <div className="oa-c-t">
+                                                        <div style={{ width: '30%' }}>{item.name}</div>
+                                                        <div style={{ width: '60%' }}>
+
+                                                        </div>
+                                                        <div style={{ width: '5%' }}>
+                                                            <Popconfirm title="确定要删除综合记录吗？" okText="确定" onCancel={(e) => { e.stopPropagation(); }} cancelText="取消" onConfirm={(e) => { e.stopPropagation(); this.deleteSynthesizeRecord(item.id); }}>
+                                                                <a onClick={(e) => { e.stopPropagation(); }}>删除</a>
+                                                            </Popconfirm>
+                                                        </div>
+                                                        <div style={{ width: '5%' }}><a onClick={(e) => { e.stopPropagation(); this.updateSynthesizeRecord(item.id); }}>修改</a></div>
+                                                    </div>
+                                                )}
                                             </React.Fragment>
-                                        )} key="1"
+                                        )} key={item.id}
                                         className="oa-c-tb"
                                         >
                                             <div style={{ margin: '8px' }}>
@@ -234,81 +278,71 @@ export default class Component extends React.Component {
                                                 </div>
                                             </div>
                                         </Panel>);
+                                    }else if(item.type == 'github') {
+                                        return (
+                                            <Panel header={(
+                                                <React.Fragment>
+                                                    <div className="oa-u-nb">
+                                                        GITHUB站点
+                                                    </div>
+                                                    {editable ? (
+                                                        <div className="oa-c-t">
+                                                            <div style={{ width: '30%' }}>
+                                                                <Input style={{ width: 300 }} value={this.state.valueSynthesize.name} onChange={this.onChangeSynthesizeName} addonAfter=".test.com" />
+                                                            </div>
+                                                            <div style={{ width: '50%' }}>
+                                                                <span style={{ fontSize: '18px' }}>→</span> <Input style={{ width: 300 }} value={this.state.valueSynthesize.github} addonBefore="https://github.com/" onChange={this.onChangeSynthesizeGithub} placeholder="yourname/repo" />
+                                                            </div>
+                                                            <div style={{ width: '10%' }}>
+                                                                <Button onClick={(e) => { e.stopPropagation();this.setState({ editingID: '' }); }}>取消</Button>
+                                                            </div>
+                                                            <div style={{ width: '10%' }}><Button type="primary" onClick={(e) => { e.stopPropagation(); this.updateSynthesizeRecord(item.id); }}>保存</Button></div>
+                                                        </div>
+                                                    ):(
+                                                        <div className="oa-c-t">
+                                                            <div style={{ width: '30%' }}>{item.name}</div>
+                                                            <div style={{ width: '60%' }}>
+                                                                <span style={{ fontSize: '18px' }}>→</span> https://github.com/{item.github}
+                                                            </div>
+                                                            <div style={{ width: '5%' }}>
+                                                                <Popconfirm title="确定要删除综合记录吗？" okText="确定" onCancel={(e) => { e.stopPropagation(); }} cancelText="取消" onConfirm={(e) => { e.stopPropagation(); this.deleteSynthesizeRecord(item.id); }}>
+                                                                    <a onClick={(e) => { e.stopPropagation(); }}>删除</a>
+                                                                </Popconfirm>
+                                                            </div>
+                                                            <div style={{ width: '5%' }}><a onClick={(e) => { e.stopPropagation(); this.updateSynthesizeRecord(item.id); }}>修改</a></div>
+                                                        </div>
+                                                    )}
+                                                </React.Fragment>
+                                            )} key={item.id}
+                                            className="oa-c-tb"
+                                            >
+            
+                                            </Panel>
+                                        );
                                     }
+                                    
                                 })}
-                                <Panel header={(
-                                    <React.Fragment>
-                                        <div className="oa-u-nb">
-                                            动态DNS
-                                        </div>
-                                        <div className="oa-c-t">
-                                            <div style={{ width: '30%' }}>test.aaaa.com</div>
-                                            <div style={{ width: '60%' }}>
 
-                                            </div>
-                                            <div style={{ width: '5%' }}><Link to="">删除</Link></div>
-                                            <div style={{ width: '5%' }}><Link to="">修改</Link></div>
-                                        </div>
-                                    </React.Fragment>
-                                )} key="1"
-                                className="oa-c-tb"
-                                >
-                                    <div style={{ margin: '8px' }}>
-                                        <div className="oa-u-u">
-                                            <div>用户名：xxxxxx</div>
-                                            <div>密码：xxxxxxx <a style={{ float: 'right' }}> 重置凭据 </a></div>
-                                        </div>
-                                    </div>
-                                </Panel>
-                                <Panel header={(
-                                    <React.Fragment>
-                                        <div className="oa-u-nb">
-                                            GITHUB站点
-                                        </div>
-                                        <div className="oa-c-t">
-                                            <div style={{ width: '30%' }}>test.aaaa.com</div>
-                                            <div style={{ width: '60%' }}>
-                                                <span style={{ fontSize: '18px' }}>→</span> http://wwww.aaa.com/aa/aa
-                                            </div>
-                                            <div style={{ width: '5%' }}><Link to="">删除</Link></div>
-                                            <div style={{ width: '5%' }}><Link to="">修改</Link></div>
-                                        </div>
-                                    </React.Fragment>
-                                )} key="2"
-                                className="oa-c-tb"
-                                >
-
-                                </Panel>
                             </Collapse>
                         </div>
                     </div>
                 </Card>
-                <Row gutter={16}>
-                    <Col className="gutter-row" md={24}>
-                        <div className="gutter-box">
-                            <Card bordered={false}>
-                                <div style={{ marginBottom: 16 }}>
-                                    <Button type="primary" onClick={this.showModalRecordAdd}>添加记录</Button>
-                                    <Link to="/ddns/record/update"><Button type="primary" >添加记录2</Button></Link>
-                                    <ModalRecord
-                                        ref={this.saveFormRef}
-                                        title={this.state.modalTitle}
-                                        visible={this.state.visible}
-                                        initValues={this.state.initValues}
-                                        onCancel={this.cancelModal}
-                                        handleSave={this.handleSave}
+                <Card style={{ width: '70%' }} bordered={true}>
+                    <div style={{ marginBottom: 16 }}>
+                        <h3>自定义资源记录</h3>
+                        <p>资源记录定义了您的域名的运作方式，其常见用途包括让您的域名指向您的网络服务器，或者为域名配置电子邮件递送。</p>
 
-                                    />
-                                </div>
-                                <Table columns={columns}
-                                    dataSource={this.state.data}
-                                    onChange={this.handleTableChange}
-                                    pagination={this.state.pagination}
-                                    loading={this.state.loading} />
-                            </Card>
+                        <div >
+                            <Link to="/ddns/record/update"><Button type="primary" >添加记录</Button></Link>
+                            
                         </div>
-                    </Col>
-                </Row>
+                        <Table columns={columns}
+                            dataSource={this.state.data}
+                            onChange={this.handleTableChange}
+                            pagination={this.state.pagination}
+                            loading={this.state.loading} />
+                    </div>
+                </Card>
             </div>
         );
     }
